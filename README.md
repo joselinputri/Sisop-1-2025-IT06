@@ -4,7 +4,6 @@ a. Poppo baru saja mulai melihat tablet ajaib dan terpukau dengan kekerenan oran
 
 ```shell
 awk -F',' '$2 == "Chris Hemsworth" {count++} END {print "Chris Hemsworth membaca", count, "buku."}' reading_data.csv
-
 ```
 
 b. Setelah menemukan tablet ajaib, Siroyo mulai penasaran dengan kebiasaan membaca yang tersimpan di dalamnya. Ia mulai menggunakan tablet ajaib dan bergumam sambil meneliti, “Aku ingin tahu berapa lama rata-rata mereka membaca dengan benda ini”. Bantu Siroyo untuk menghitung rata-rata durasi membaca (Reading_Duration_Minutes) untuk buku-buku yang dibaca menggunakan “Tablet”
@@ -22,7 +21,7 @@ awk -F, 'NR>1 {if ($7 > max) {max=$7; title=$3}} END {print "Buku dengan rating 
 d. Siroyo mengusap keningnya dan berkata, "Petualangan kita belum selesai! Aku harus bikin laporan untuk klub buku besok." Ia ingin membuat laporan yang istimewa dengan tablet ajaib itu, fokus pada teman-teman di Asia. "Aku penasaran genre apa yang paling populer di sana setelah tahun 2023," katanya, membuka reading_data.csv sekali lagi. Bantu Siroyo menganalisis data untuk menemukan genre yang paling sering dibaca di Asia setelah 31 Desember 2023, beserta jumlahnya, agar laporannya jadi yang terbaik di klub.
 
 ```shell
- awk -F, '
+awk -F, '
 $5 > "2023-12-31" && $9 == "Asia" { genre_count[$4]++ }
 END {
     for (genre in genre_count)
