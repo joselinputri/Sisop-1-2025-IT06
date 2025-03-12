@@ -66,4 +66,3 @@ register_user() {
     echo "Registration successful!"
 }
 
-register_user
