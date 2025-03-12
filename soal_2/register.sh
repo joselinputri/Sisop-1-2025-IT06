@@ -1,31 +1,69 @@
+#!/bin/bash
+
+CSV_FILE="data/player.csv"
+
+if [ ! -f "$CSV_FILE" ]; then
+    mkdir -p "$(dirname "$CSV_FILE")"
+    echo "Name,Email,Password" > "$CSV_FILE"
+fi
+
 email_exists() {
     local email=$1
-    while IFS=',' read -r name email_in file_password; do
-        if [[ "$email" == "$email_in" ]]; then
-            return 0
-        fi
-    done < data/player.csv
-    return 1
-}
-
-register_user() {
-    local name=$1
-    local email=$2
-    local password=$3
-
-    if email_exists "$email"; then
-        echo "Email already exists. Please try logging in instead."
+    if grep -q "^[^,]*,$email," "$CSV_FILE"; then
+        return 0
     else
-        echo "$name,$email,$password" >> data/player.csv
-        echo "Registration successful!"
+        return 1
     fi
 }
 
-echo "Enter your name"
-read name
-echo "Enter your email"
-read email
-echo "Enter your password"
-read -s password 
+validate_email() {
+    local email=$1
+    if [[ "$email" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
 
-register_user "$name" "$email" "$password" 
+validate_password() {
+    local password=$1
+    if [[ ${#password} -gt 8 ]]; then
+        return 0
+    else
+        return 1 
+    fi
+}
+
+register_user() {
+    echo "Enter your name:"
+    read -r name
+    echo "Enter your email:"
+    read -r email
+    echo "Enter your password:"
+    read -rs password
+
+    if [[ -z "$name" ]]; then
+        echo "Error: Name cannot be empty."
+        return
+    fi
+
+    if ! validate_email "$email"; then
+        echo "Error: Invalid email format. Please use format: example@domain.com"
+        return
+    fi
+
+    if email_exists "$email"; then
+        echo "Error: Email already exists. Please try logging in instead."
+        return
+    fi
+
+    if ! validate_password "$password"; then
+        echo "Error: Password must be more than 8 characters."
+        return
+    fi
+
+    echo "$name,$email,$password" >> "$CSV_FILE"
+    echo "Registration successful!"
+}
+
+register_user
