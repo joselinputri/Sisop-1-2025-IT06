@@ -2,6 +2,7 @@
 
 source register.sh
 source login.sh
+source scripts/core_monitor.sh
 
 while true; do
     clear
@@ -16,7 +17,10 @@ while true; do
 
     case "$option" in
         1)
-            check_login
+            login
+            if [[ $? -eq 0 ]]; then
+                monitor_cpu_usage
+            fi
             read -rp "Press Enter to continue..."
             ;;
         2)

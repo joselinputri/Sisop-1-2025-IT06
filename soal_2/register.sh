@@ -27,14 +27,14 @@ validate_email() {
 
 validate_password() {
     local password=$1
-    if [[ ${#password} -gt 8 ]]; then
+    if [[ ${#password} -ge 8 ]]; then
         return 0
     else
         return 1 
     fi
 }
 
-register_user() {
+register() {
     echo "Enter your name:"
     read -r name
     echo "Enter your email:"
@@ -62,7 +62,9 @@ register_user() {
         return
     fi
 
-    echo "$name,$email,$password" >> "$CSV_FILE"
+    local saved_password=$(echo -n "$password" | sha256sum | awk '{print $1}')
+
+    echo "$name,$email,$saved_password" >> "$CSV_FILE"
     echo "Registration successful!"
 }
 
