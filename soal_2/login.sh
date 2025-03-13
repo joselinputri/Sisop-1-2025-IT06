@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CSV_FILE="data/player.csv"
+
 if [ ! -f "$CSV_FILE" ]; then
     echo "Name,Email,Password" > "$CSV_FILE"
 fi
@@ -10,19 +11,27 @@ login() {
     read -r email
     echo "Enter your password:"
     read -rs password
+    echo
 
-    local found=0
+    local password_hash
+    password_hash=$(echo -n "$password" | sha256sum | awk '{print $1}')
+
     while IFS=',' read -r name email_in file_password; do
-      if [[ "$email" == "$email_in" && "$(echo -n "$password" | sha256sum | awk '{print $1}')" == "$file_password" ]]; then
-            found=1
-            break
+        if [[ "$email" == "$email_in" && "$password_hash" == "$file_password" ]]; then
+            echo "✅ Login successful!"
+            return 0 
         fi
-    done < "$CSV_FILE"
+    done < <(tail -n +2 "$CSV_FILE")
 
-    if [[ $found -eq 1 ]]; then
-        echo "Login successful!"
-    else
-        echo "Invalid email or password."
-    fi
+    echo "❌ Invalid email or password."
+    return 1
 }
 
+while true; do
+    login
+    if [[ $? -eq 0 ]]; then
+      sleep 1  
+      break
+    fi
+    sleep 2
+done

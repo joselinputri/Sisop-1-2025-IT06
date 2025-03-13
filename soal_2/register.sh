@@ -9,10 +9,10 @@ fi
 
 email_exists() {
     local email=$1
-    if grep -q "^[^,]*,$email," "$CSV_FILE"; then
-        return 0
+    if grep -q "^.*,$email,.*$" "$CSV_FILE"; then
+        return 0  # Email exists
     else
-        return 1
+        return 1  # Email does not exist
     fi
 }
 
@@ -30,7 +30,7 @@ validate_password() {
     if [[ ${#password} -ge 8 ]]; then
         return 0
     else
-        return 1 
+        return 1
     fi
 }
 
@@ -41,30 +41,40 @@ register() {
     read -r email
     echo "Enter your password:"
     read -rs password
+    echo
 
     if [[ -z "$name" ]]; then
-        echo "Error: Name cannot be empty."
+        echo "❌ Please fill out your name"
         return
     fi
 
     if ! validate_email "$email"; then
-        echo "Error: Invalid email format. Please use format: example@domain.com"
-        return
+        echo "❌ Invalid email format. Use example@domain.com"
+        return 1
     fi
 
     if email_exists "$email"; then
-        echo "Error: Email already exists. Please try logging in instead."
-        return
+        echo "❌ Email already exists. Try logging in."
+        return 1
     fi
 
     if ! validate_password "$password"; then
-        echo "Error: Password must be more than 8 characters."
-        return
+        echo "❌ Password must be at least 8 characters long."
+        return 1
     fi
 
-    local saved_password=$(echo -n "$password" | sha256sum | awk '{print $1}')
+    local saved_password
+    saved_password=$(echo -n "$password" | sha256sum | awk '{print $1}')
 
     echo "$name,$email,$saved_password" >> "$CSV_FILE"
-    echo "Registration successful!"
+    echo "✅ Registration successful!"
+    return 0
 }
-
+while true; do
+    register
+    if [[ $? -eq 0 ]]; then
+      sleep 1  
+      break
+    fi
+    sleep 2
+done

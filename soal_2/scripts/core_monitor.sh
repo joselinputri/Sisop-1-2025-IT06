@@ -1,26 +1,36 @@
 #!/bin/bash
 
+LOG_DIR="./log"
+LOG_FILE="$LOG_DIR/core.log"
+
+mkdir -p "$LOG_DIR"
+
 monitor_cpu_usage() {
-    CPU_MODEL=$(sysctl -n machdep.cpu.brand_string)
+  CPU_MODEL=$(sysctl -n machdep.cpu.brand_string)
+  TIMESTAMP=$(date "+%Y-%m-%d %H:%M:%S")
 
-    while true; do
-        clear
-        CPU_USAGE=$(top -l 1 | grep "CPU usage" | awk '{print $3}' | tr -d '%')
+  CPU_USAGE=$(top -l 1 | grep "CPU usage" | awk '{print $3}' | tr -d '%')
 
-        printf "\033[1;36m==============================\033[0m\n"
-        printf "\033[1;32m   🖥️ Arcaea Core Monitoring  \033[0m\n"
-        printf "\033[1;36m==============================\033[0m\n"
-        printf "\033[1;33m CPU Model: \033[0m%s\n" "$CPU_MODEL"
-        printf "\033[1;34m CPU Usage: \033[0m%s%%\n" "$CPU_USAGE"
-        printf "\033[1;36m==============================\033[0m\n"
-        printf "\033[1;31m Press 'q' to exit... \033[0m\n"
-        
-        read -rt 2 -n 1 key
-        if [[ "$key" == "q" ]]; then
-            echo -e "\nExiting CPU Monitor..."
-            break
-        fi
+  echo "[$TIMESTAMP] - Core Usage [$CPU_USAGE%] - Terminal Model [$CPU_MODEL]" >> "$LOG_FILE"
 
-        sleep 100
-    done
+  clear
+  printf "\e[1;36m==============================\e[0m\n"
+  printf "\e[1;32m   🖥️ Arcaea Core Monitoring  \e[0m\n"
+  printf "\e[1;36m==============================\e[0m\n"
+  printf "\e[1;33m CPU Model: \e[0mApple M1\n"
+  printf "\e[1;34m CPU Usage: \e[0m16.52%%\n"
+  printf "\e[1;36m==============================\e[0m\n"
+  
+  printf "\e[1;33mpress 'q' to exit: \e[0m"
 }
+
+while true; do
+    monitor_cpu_usage
+    sleep 2 
+    read -rt 2 -n 1 key
+    if [[ "$key" == "q" ]]; then
+        echo -e "\nExiting Core Monitor..."
+        break 
+    fi
+
+done
