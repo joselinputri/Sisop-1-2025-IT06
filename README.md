@@ -346,9 +346,6 @@ echo -e "\e[1;33mWaktu:\e[0m $(date '+%H:%M:%S')"
 echo -e "\e[1;33mLoad Average:\e[0m $(uptime | awk -F'load average:' '{print $2}')"
 → Menampilkan beban sistem terbaru.
 
-echo -e "\e[1;33mTasks:\e[0m $(ps -eo stat | grep -c '^R') running, $(ps -eo stat | grep -c '^S') sleeping"
-→ Menampilkan jumlah proses berjalan (R) & tidur (S).
-
 ps -eo pid,user,pri,ni,vsize,rss,pcpu,pmem,time,comm --sort=-%cpu | head -15
 → Menampilkan 15 proses dengan penggunaan CPU tertinggi.
 
