@@ -86,7 +86,7 @@ Setelah berhasil register, kita dapat login kedalam sistem dengan email dan pass
 ```
 
 ##### Fitur register
-![register](./img/register.jpeg)
-##### Fitur login
-![login](./img/login.jpeg)
+<img src="./img/register.jpeg" width="300" />
 
+##### Fitur login
+<img src="./img/login.jpeg" width="300" />
