@@ -30,7 +30,7 @@ login() {
 while true; do
     login
     if [[ $? -eq 0 ]]; then
-      sleep 1  
+      sleep 5  
       break
     fi
     sleep 2

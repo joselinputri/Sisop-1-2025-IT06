@@ -1,6 +1,7 @@
 #!/bin/bash
 
-LOG_FILE="fragment_monitor.log"
+LOG_DIR="./log"
+LOG_FILE="$LOG_DIR/fragment_monitor.log"
 
 monitor_usage() {
     clear
