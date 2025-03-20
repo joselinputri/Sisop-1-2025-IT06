@@ -173,16 +173,16 @@ sort -k2 -nr → Urutkan berdasarkan jumlah buku (terbanyak ke terkecil).
 
 head -n1 → Ambil genre dengan jumlah buku terbanyak.
 
-**Output IA**  
+**Output 1A**  
 ![Output IA](img/1a.chrishemsworth.jpeg)  
 
-**Output IB**  
+**Output 1B**  
 ![Output IB](img/1b.chrishemsworth.jpeg)  
 
-**Output IC**  
+**Output 1C**  
 ![Output IC](img/1c.chrishemsworth.jpeg)  
 
-**Output ID**  
+**Output 1D**  
 ![Output ID](img/1d.chrishemsworth.jpeg)  
 
 
@@ -381,12 +381,17 @@ case "$1" in
     ;;
 → Jika tidak cocok, tampilkan pesan bantuan lalu keluar.
 
-**Output 3A**
-<img src="images/3a_speaktome.jpeg" width="300" />
-<img src="images/3b_ontherun.jpeg" width="300" />
-<img src="images/3c_time.jpeg" width="300" />
-<img src="images/3d_money.jpeg" width="300" />
-<img src="images/3e_braindamage.jpeg" width="300" />
+**Output 3A**  
+![3A - Speak to Me](img/3a_speaktome.jpeg)  
+**Output 3B** 
+![3B - On the Run](img/3b_ontherun.jpeg)  
+**Output 3C** 
+![3C - Time](img/3c_time.jpeg)  
+**Output 3D** 
+![3D - Money](img/3d_money.jpeg)  
+**Output 3E** 
+![3E - Brain Damage](img/3e_braindamage.jpeg)  
+
 
 
 
