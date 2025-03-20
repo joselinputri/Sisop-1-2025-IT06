@@ -177,6 +177,31 @@ Setelah berhasil register, kita dapat login kedalam sistem dengan email dan pass
     done < <(tail -n +2 "$CSV_FILE")
 ```
 
+Dan setelah berhasil login, user dapat melihat _CPU Usage_ dan juga _Ram Usage_. Selain itu, user juga bisa untuk merecord Ram dan CPU Usage tersebut mengunakan crontab. Dimana fitur tersebut tersedia pada opsi Crontab Manager di terminal utama.
+
+Pada Crontab Manager, tersedia dua fungsi utama, yaitu core monitor dan juga fragment monitor.
+
+Pada kode dibawah ini, berguna untuk mengecek CPU model dan juga CPU usage yang ada di hardware/laptop.
+
+```shell
+    CPU_MODEL=$(sysctl -n machdep.cpu.brand_string)
+    TIMESTAMP=$(date "+%Y-%m-%d %H:%M:%S")
+
+    CPU_USAGE=$(top -l 1 | grep "CPU usage" | awk '{print $3}' | tr -d '%')
+```
+
+Dan pada kode dibawah ini digunakan untuk menghitung RAM usage.
+
+```shell
+RAM_TOTAL=$(sysctl -n hw.memsize)
+RAM_TOTAL_MB=$((RAM_TOTAL / 1024 / 1024))
+RAM_FREE=$(vm_stat | awk '/Pages free/ {print $3}' | sed 's/\.//')
+RAM_FREE_MB=$((RAM_FREE * 4096 / 1024 / 1024))
+RAM_USED_MB=$((RAM_TOTAL_MB - RAM_FREE_MB))
+RAM_USAGE_PERCENT=$(( RAM_USED_MB * 100 / RAM_TOTAL_MB ))
+
+```
+
 ##### Fitur register
 
 <img src="./img/register.jpeg" width="300" />
@@ -184,6 +209,18 @@ Setelah berhasil register, kita dapat login kedalam sistem dengan email dan pass
 ##### Fitur login
 
 <img src="./img/login.jpeg" width="300" />
+
+##### Fitur CPU monitoring
+
+<img src="./img/cpu_monitoring.jpeg" width="300" />
+
+##### Fitur RAM monitoring
+
+<img src="./img/ram_monitoring.jpeg" width="300" />
+
+##### Crontab Manager
+
+<img src="./img/crontab_manager.jpeg" width="300" />
 
 ### Soal 3 (Putri Joselina Silitonga)
 

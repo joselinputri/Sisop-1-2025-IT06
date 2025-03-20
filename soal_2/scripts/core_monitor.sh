@@ -17,8 +17,8 @@ monitor_cpu_usage() {
   printf "\e[1;36m==============================\e[0m\n"
   printf "\e[1;32m   🖥️ Arcaea Core Monitoring  \e[0m\n"
   printf "\e[1;36m==============================\e[0m\n"
-  printf "\e[1;33m CPU Model: \e[0mApple M1\n"
-  printf "\e[1;34m CPU Usage: \e[0m16.52%%\n"
+  printf "\e[1;33m CPU Model: \e[0m%s \e[0m\n" "$CPU_MODEL" 
+  printf "\e[1;34m CPU Usage: \e[0m %s%%\n" "$CPU_USAGE"
   printf "\e[1;36m==============================\e[0m\n"
   
   printf "\e[1;33mpress 'q' to exit: \e[0m"
