@@ -173,6 +173,222 @@ sort -k2 -nr → Urutkan berdasarkan jumlah buku (terbanyak ke terkecil).
 
 head -n1 → Ambil genre dengan jumlah buku terbanyak.
 
+**Output 1A**
+<img src="images/1a.chrishemsworth" width="300">
+**Output 1B**
+<img src="images/1b.chrishemsworth" width="300">
+**Output 1C**
+<img src="images/1c.chrishemsworth" width="300">
+**Output 1D**
+<img src="images/1d.chrishemsworth" width="300">
+
+
+
+**Soal 3 (Putri Joselina Silitonga)**
+
+Untuk merayakan ulang tahun ke 52 album The Dark Side of the Moon, tim PR Pink Floyd mengadakan sebuah lomba dimana peserta diminta untuk membuat sebuah script bertemakan setidaknya 5 dari 10 lagu dalam album tersebut. Sebagai salah satu peserta, kamu memutuskan untuk memilih Speak to Me, On the Run, Time, Money, dan Brain Damage. Saat program ini dijalankan, terminal harus dibersihkan terlebih dahulu agar tidak mengganggu tampilan dari fungsi fungsi yang kamu buat. Program ini dijalankan dengan cara ./dsotm.sh --play=”<Track>” dengan Track sebagai nama nama lagu yang kamu pilih.
+
+**a.Speak to Me**
+
+```bash
+speak_to_me() {
+    while true; do
+        curl -s https://www.affirmations.dev | awk -F'"' '{print $4}'
+        sleep 1
+    done
+}
+```
+
+while true; do → Loop tak terbatas (berjalan terus-menerus).
+curl -s https://www.affirmations.dev →
+Mengambil data dari API afirmasi positif.
+
+-s (silent) agar tidak menampilkan log tambahan.
+
+awk -F'"' '{print $4}' →
+Memproses JSON output API untuk mengambil teks afirmasi.
+$4 mengambil teks di antara tanda kutip kedua ("affirmation": "..." → hanya "...").
+
+sleep 1 → Menunggu 1 detik sebelum mengambil afirmasi berikutnya.
+
+b. On_the_run
+
+```bash
+on_the_run() {
+    bar_length=200
+    progress=0
+    while [ $progress -le $bar_length ]; do
+        clear
+        echo "*** On the Run ***"
+        echo -n "["
+        for ((i = 0; i < progress; i++)); do echo -n "*"; done
+        for ((i = progress; i < bar_length; i++)); do echo -n " "; done
+        echo "] $(($progress * 100 / $bar_length))%"
+        progress=$((progress + 1))
+        sleep 0.2
+    done
+}
+```
+bar_length=200 → Panjang total progress bar.
+
+progress=0 → Menyimpan nilai progres saat ini.
+Looping untuk Menampilkan Progress Bar
+
+while [ $progress -le $bar_length ]; do → Selama nilai progress masih lebih kecil atau sama dengan bar_length, jalankan loop.
+
+echo "*** On the Run ***" → Menampilkan judul.
+
+echo -n "[" → Menampilkan tanda awal progress bar.
+
+Bintang * sebanyak progress → Menggunakan for ((i = 0; i < progress; i++)).
+
+Spasi sisa bar → Menggunakan for ((i = progress; i < bar_length; i++)).
+
+Menampilkan persentase kemajuan → $(($progress * 100 / $bar_length))%.
+
+
+progress=$((progress + 1)) → Menambah nilai progress setiap iterasi.
+sleep 0.2 → Memberi jeda 0.2 detik agar animasi terlihat lebih nyata.
+c. Time Display
+
+```bash
+time_display() {
+    while true; do
+        clear
+        echo "~~~ Time ~~~"
+        date "+%Y-%m-%d %H:%M:%S"
+        sleep 1
+    done
+}
+```
+Loop tanpa henti (while true; do) memastikan fungsi berjalan terus.
+
+clear membersihkan layar agar hanya tampilan terbaru yang terlihat.
+Menampilkan header "~~~ Time ~~~".
+
+Menampilkan waktu saat ini dengan format YYYY-MM-DD HH:MM:SS 
+
+d. Money
+
+```bash money() {
+    symbols=('$' '€' '£' '¥' '¢' 'K' 'A' 'W' 'O' 'R' 'U' '𓆩♡𓆪')
+    cols=$(tput cols)
+    lines=$(tput lines)
+
+    tput civis
+    clear
+
+    while true; do
+        if [ "$lines" -eq 0 ] || [ "$cols" -eq 0 ]; then
+            exit 1
+        fi
+
+        row=$((RANDOM % lines))
+        col=$((RANDOM % cols))
+        symbol="${symbols[RANDOM % ${#symbols[@]}]}"
+        color=$((RANDOM % 256))
+
+        tput cup "$row" "$col"
+        echo -ne "\e[38;5;${color}m${symbol}\e[0m"
+
+        sleep 0.05
+    done
+}
+```
+Menyimpan simbol dalam array (symbols).
+
+Mengambil ukuran terminal (tput cols & tput lines).
+
+Menyembunyikan kursor (tput civis) dan membersihkan layar (clear).
+
+Loop tanpa henti:
+Memilih posisi acak (row & col).dan memilih simbol acak dari array.
+Memilih warna acak (color).
+
+Menampilkan simbol di posisi tersebut dengan warna acak.
+
+Jeda 0.05 detik sebelum mengulang.
+
+e. Brain Damage 
+ 
+ ```bash
+ brain_damage() {
+    while true; do
+        clear
+        echo -e "\e[1;35m------ Brain Damage ------\e[0m"
+        echo -e "\e[1;33mWaktu:\e[0m $(date '+%H:%M:%S')"
+        echo -e "\e[1;33mLoad Average:\e[0m $(uptime | awk -F'load average:' '{print $2}')"
+        echo -e "\e[1;33mTasks:\e[0m $(ps -eo stat | grep -c '^R') running, $(ps -eo stat | grep -c '^S') sleeping"
+        echo -e "\e[1;34m====================================\e[0m"
+        echo -e "\e[1;36mPID   USER      PR  NI    VIRT   RES  %CPU %MEM  TIME+ COMMAND\e[0m"
+
+        ps -eo pid,user,pri,ni,vsize,rss,pcpu,pmem,time,comm --sort=-%cpu | head -15 | while read -r pid user pri ni vsize rss pcpu pmem time comm; do
+            printf "\e[1;37m%-6s %-8s %-3s %-3s %-8s %-6s %-4s %-4s %-8s %-s\e[0m\n" "$pid" "$user" "$pri" "$ni" "$vsize" "$rss" "$pcpu" "$pmem" "$time" "$comm"
+        done
+
+        sleep 2
+    done
+}
+```
+
+while true; do
+→ Looping tanpa henti hingga dihentikan (Ctrl + C).
+
+clear
+→ Membersihkan layar sebelum update.
+
+echo -e "\e[1;35m------ Brain Damage ------\e[0m"
+→ Menampilkan judul berwarna ungu.
+
+echo -e "\e[1;33mWaktu:\e[0m $(date '+%H:%M:%S')"
+→ Menampilkan waktu saat ini (HH:MM:SS).
+
+echo -e "\e[1;33mLoad Average:\e[0m $(uptime | awk -F'load average:' '{print $2}')"
+→ Menampilkan beban sistem terbaru.
+
+echo -e "\e[1;33mTasks:\e[0m $(ps -eo stat | grep -c '^R') running, $(ps -eo stat | grep -c '^S') sleeping"
+→ Menampilkan jumlah proses berjalan (R) & tidur (S).
+
+ps -eo pid,user,pri,ni,vsize,rss,pcpu,pmem,time,comm --sort=-%cpu | head -15
+→ Menampilkan 15 proses dengan penggunaan CPU tertinggi.
+
+sleep 2
+→ Menunggu 2 detik sebelum refresh.
+
+```bash
+case "$1" in
+    --play="Speak to Me") speak_to_me ;;
+    --play="On the Run") on_the_run ;;
+    --play="Time") time_display ;;
+    --play="Money") money ;;
+    --play="Brain Damage") brain_damage ;;
+    *) 
+        echo "Usage: $0 --play=\"<Track>\""
+        echo "Available Tracks: Speak to Me, On the Run, Time, Money, Brain Damage"
+        exit 1
+        ;;
+esac
+```
+case "$1" in
+→ Mengecek nilai argumen pertama ($1).
+
+--play="Speak to Me") speak_to_me sampai brain_damage
+→ Jika argumen cocok, jalankan fungsi terkait.
+
+    echo "Usage: $0 --play=\"<Track>\""
+    echo "Available Tracks: Speak to Me, On the Run, Time, Money, Brain Damage"
+    exit 1
+    ;;
+→ Jika tidak cocok, tampilkan pesan bantuan lalu keluar.
+
+**Output 3A**
+<img src="images/3a_speaktome" width="300">
+<img src="images/3b_ontherun" width="300">
+<img src="images/3c_time" width="300">
+<img src="images/3d_money" width="300">
+<img src="images/3e_braindamage" width="300">
+
+
 
 
 
