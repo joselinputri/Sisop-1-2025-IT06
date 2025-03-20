@@ -174,13 +174,13 @@ sort -k2 -nr → Urutkan berdasarkan jumlah buku (terbanyak ke terkecil).
 head -n1 → Ambil genre dengan jumlah buku terbanyak.
 
 **Output 1A**
-<img src="images/1a.chrishemsworth.png" width="300">
+<img src="images/1a.chrishemsworth.jpeg" width="300">
 **Output 1B**
-<img src="images/1b.chrishemsworth.png" width="300">
+<img src="images/1b.chrishemsworth.jpeg" width="300">
 **Output 1C**
-<img src="images/1c.chrishemsworth.png" width="300">
+<img src="images/1c.chrishemsworth.jpeg" width="300">
 **Output 1D**
-<img src="images/1d.chrishemsworth.png" width="300">
+<img src="images/1d.chrishemsworth.jpeg" width="300">
 
 
 
@@ -379,11 +379,11 @@ case "$1" in
 → Jika tidak cocok, tampilkan pesan bantuan lalu keluar.
 
 **Output 3A**
-<img src="images/3a_speaktome.png" width="300">
-<img src="images/3b_ontherun.png" width="300">
-<img src="images/3c_time.png" width="300">
-<img src="images/3d_money.png" width="300">
-<img src="images/3e_braindamage.png" width="300">
+<img src="images/3a_speaktome.jpeg" width="300">
+<img src="images/3b_ontherun.jpeg" width="300">
+<img src="images/3c_time.jpeg" width="300">
+<img src="images/3d_money.jpeg" width="300">
+<img src="images/3e_braindamage.jpeg" width="300">
 
 
 
