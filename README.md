@@ -173,14 +173,17 @@ sort -k2 -nr → Urutkan berdasarkan jumlah buku (terbanyak ke terkecil).
 
 head -n1 → Ambil genre dengan jumlah buku terbanyak.
 
-**Output 1A**
-<img src="images/1a.chrishemsworth.jpeg" width="300" />
-**Output 1B**
-<img src="images/1b.chrishemsworth.jpeg" width="300" />
-**Output 1C**
-<img src="images/1c.chrishemsworth.jpeg" width="300" />
-**Output 1D**
-<img src="images/1d.chrishemsworth.jpeg" width="300" />
+**Output IA**  
+![Output IA](img/1a.chrishemsworth.jpeg)  
+
+**Output IB**  
+![Output IB](img/1b.chrishemsworth.jpeg)  
+
+**Output IC**  
+![Output IC](img/1c.chrishemsworth.jpeg)  
+
+**Output ID**  
+![Output ID](img/1d.chrishemsworth.jpeg)  
 
 
 
