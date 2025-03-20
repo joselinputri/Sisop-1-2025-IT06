@@ -7,6 +7,98 @@ Repository ini berisi hasil pengerjaan Praktikum Sistem Operasi 2025 Modul 1
 | Paundra Pujo Darmawan    | 5027241008 |
 | Putri Joselina Silitonga | 5027241116 |
 
+### Soal 1: Putri Joselina Silitonga
+
+Di sebuah desa kecil yang dikelilingi bukit hijau, Poppo dan Siroyo, dua sahabat karib, sering duduk di bawah pohon tua sambil membayangkan petualangan besar. Poppo, yang ceria dan penuh semangat, baru menemukan kesenangan dalam dunia buku, sementara Siroyo, dengan otaknya yang tajam, suka menganalisis segala hal. Suatu hari, mereka menemukan tablet ajaib berisi catatan misterius bernama reading_data.csv. Dengan bantuan keajaiban awk, mereka memutuskan untuk menjelajahi rahasia di balik data itu, siap menghadapi tantangan demi tantangan dalam petualangan baru mereka.
+
+**a. Bantu Poppo menghitung jumlah baris di tablet ajaib yang menunjukkan buku-buku yang dibaca oleh Chris Hemsworth.**
+
+```bash
+awk -F',' '$2 == "Chris Hemsworth" {count++} END {print "Chris Hemsworth membaca", count, "buku."}' reading_data.csv
+```
+
+-F',' → Menetapkan pemisah kolom sebagai koma (CSV format).
+
+'$2 == "Chris Hemsworth"' → Mengecek apakah kolom kedua berisi "Chris Hemsworth".
+
+{count++} → Menghitung jumlah baris yang cocok.
+
+END {print "Chris Hemsworth membaca", count, "buku."} → Menampilkan hasil setelah semua baris diproses.
+
+**b. Bantu Siroyo untuk menghitung rata-rata durasi membaca (Reading_Duration_Minutes) untuk buku-buku yang dibaca menggunakan “Tablet”**
+
+```bash
+awk -F, 'NR>1 && $8 == "Tablet" { sum += $6; count++ } END { if (count > 0) print "Rata-rata durasi membaca dengan Tablet adalah", sum / count, "menit."; else print "Tidak ada data."; }' reading_data.csv
+```
+
+'NR>1 && $8 == "Tablet"' →
+NR>1 → Melewati baris pertama ( header).
+
+$8 == "Tablet" → Memilih hanya baris yang di kolom ke-8 berisi "Tablet".
+
+{ sum += $6; count++ } →
+Menjumlahkan nilai di kolom ke-6 (durasi membaca).
+
+END { if (count > 0) ... } →
+Jika ada data (count > 0), hitung rata-rata sum / count dan cetak hasil.
+Jika tidak ada data, cetak "Tidak ada data.".
+
+**c.Siapa yang memberikan rating tertinggi untuk buku yang dibaca (Rating) beserta nama (Name) dan judul bukunya (Book_Title).**
+
+```bash
+awk -F, 'NR>1 {                                if ($7 > max) {
+        max = $7
+        title = $3
+        reader = $2
+    }                                                                                                     }
+END {
+    if (max > 0)
+        print "Pembaca dengan rating tertinggi:", reader, "-", title, "-", max
+    else
+        print "Tidak ada data."
+}' reading_data.csv
+```
+
+NR>1 → Melewati baris pertama (header).
+
+Membandingkan rating tertinggi di kolom ke-7 ($7).
+
+Jika ditemukan rating lebih tinggi, simpan rating, judul buku, dan nama pembaca.
+Setelah semua data dibaca, cetak hasilnya.
+
+d. **Bantu Siroyo menganalisis data untuk menemukan genre yang paling sering dibaca di Asia setelah 31 Desember 2023, beserta jumlahnya, agar laporannya jadi yang terbaik di klub**
+
+```bash
+awk -F, '
+$5 > "2023-12-31" && $9 == "Asia" { genre_count[$4]++ }
+END {
+    for (genre in genre_count)
+        print genre, genre_count[genre]
+}' reading_data.csv | sort -k2 -nr | head -n1 | awk '{print "Genre paling populer di Asia setelah 2023 adalah", $1, "dengan", $2, "buku."}'
+```
+
+Pilih hanya buku yang dibaca setelah 31 Desember 2023 ($5 > "2023-12-31").
+Hanya untuk pembaca dari Asia ($9 == "Asia").
+
+Simpan dalam array genre_count[$4]++.
+Urutkan dan ambil genre terbanyak
+
+sort -k2 -nr → Urutkan berdasarkan jumlah buku (terbanyak ke terkecil).
+
+head -n1 → Ambil genre dengan jumlah buku terbanyak.
+
+**Output 1A**  
+![Output IA](img/1a.chrishemsworth.jpeg)
+
+**Output 1B**  
+![Output IB](img/1b.chrishemsworth.jpeg)
+
+**Output 1C**  
+![Output IC](img/1c.chrishemsworth.jpeg)
+
+**Output 1D**  
+![Output ID](img/1d.chrishemsworth.jpeg)
+
 ### Soal 2 (Paundra Pujo Darmawan)
 
 Jadi untuk soal ini objektif nya adalah membuat sebuah aplikasi monitoring RAM dan CPU pada perangkat kita. Pada menu awal diharuskan untuk login, dan jika belum login harus melakukan register dahulu dengan beberapa ketentuan, yaitu:
@@ -86,108 +178,14 @@ Setelah berhasil register, kita dapat login kedalam sistem dengan email dan pass
 ```
 
 ##### Fitur register
+
 <img src="./img/register.jpeg" width="300" />
 
 ##### Fitur login
+
 <img src="./img/login.jpeg" width="300" />
 
-
-**Soal 1: Putri Joselina Silitonga**
-
-**Di sebuah desa kecil yang dikelilingi bukit hijau, Poppo dan Siroyo, dua sahabat karib, sering duduk di bawah pohon tua sambil membayangkan petualangan besar. Poppo, yang ceria dan penuh semangat, baru menemukan kesenangan dalam dunia buku, sementara Siroyo, dengan otaknya yang tajam, suka menganalisis segala hal. Suatu hari, mereka menemukan tablet ajaib berisi catatan misterius bernama reading_data.csv. Dengan bantuan keajaiban awk, mereka memutuskan untuk menjelajahi rahasia di balik data itu, siap menghadapi tantangan demi tantangan dalam petualangan baru mereka.**
-
-**a. Bantu Poppo menghitung jumlah baris di tablet ajaib yang menunjukkan buku-buku yang dibaca oleh Chris Hemsworth.**
-
-```bash
-awk -F',' '$2 == "Chris Hemsworth" {count++} END {print "Chris Hemsworth membaca", count, "buku."}' reading_data.csv
-```
-
--F',' → Menetapkan pemisah kolom sebagai koma (CSV format).
-
-'$2 == "Chris Hemsworth"' → Mengecek apakah kolom kedua berisi "Chris Hemsworth".
-
-{count++} → Menghitung jumlah baris yang cocok.
-
-END {print "Chris Hemsworth membaca", count, "buku."} → Menampilkan hasil setelah semua baris diproses.
-
-**b. Bantu Siroyo untuk menghitung rata-rata durasi membaca (Reading_Duration_Minutes) untuk buku-buku yang dibaca menggunakan “Tablet”**
-
-```bash
-awk -F, 'NR>1 && $8 == "Tablet" { sum += $6; count++ } END { if (count > 0) print "Rata-rata durasi membaca dengan Tablet adalah", sum / count, "menit."; else print "Tidak ada data."; }' reading_data.csv
-```
-
-'NR>1 && $8 == "Tablet"' →
-NR>1 → Melewati baris pertama ( header).
-
-$8 == "Tablet" → Memilih hanya baris yang di kolom ke-8 berisi "Tablet".
-
-{ sum += $6; count++ } →
-Menjumlahkan nilai di kolom ke-6 (durasi membaca).
-
-END { if (count > 0) ... } →
-Jika ada data (count > 0), hitung rata-rata sum / count dan cetak hasil.
-Jika tidak ada data, cetak "Tidak ada data.".
-
-**c.Siapa yang memberikan rating tertinggi untuk buku yang dibaca (Rating) beserta nama (Name) dan judul bukunya (Book_Title).**
-
-```bash
-awk -F, 'NR>1 {                                if ($7 > max) {                                                   
-        max = $7
-        title = $3
-        reader = $2
-    }                                                                                                     }                                
-END {
-    if (max > 0) 
-        print "Pembaca dengan rating tertinggi:", reader, "-", title, "-", max
-    else 
-        print "Tidak ada data."
-}' reading_data.csv
-```
-
-NR>1 → Melewati baris pertama (header).
-
-Membandingkan rating tertinggi di kolom ke-7 ($7).
-
-Jika ditemukan rating lebih tinggi, simpan rating, judul buku, dan nama pembaca.
-Setelah semua data dibaca, cetak hasilnya.
-
-d. **Bantu Siroyo menganalisis data untuk menemukan genre yang paling sering dibaca di Asia setelah 31 Desember 2023, beserta jumlahnya, agar laporannya jadi yang terbaik di klub**
-
-
-```bash 
-awk -F, '
-$5 > "2023-12-31" && $9 == "Asia" { genre_count[$4]++ }
-END {
-    for (genre in genre_count)
-        print genre, genre_count[genre]
-}' reading_data.csv | sort -k2 -nr | head -n1 | awk '{print "Genre paling populer di Asia setelah 2023 adalah", $1, "dengan", $2, "buku."}'
-```
-
-Pilih hanya buku yang dibaca setelah 31 Desember 2023 ($5 > "2023-12-31").
-Hanya untuk pembaca dari Asia ($9 == "Asia").
-
-Simpan dalam array genre_count[$4]++.
-Urutkan dan ambil genre terbanyak 
-
-sort -k2 -nr → Urutkan berdasarkan jumlah buku (terbanyak ke terkecil).
-
-head -n1 → Ambil genre dengan jumlah buku terbanyak.
-
-**Output 1A**  
-![Output IA](img/1a.chrishemsworth.jpeg)  
-
-**Output 1B**  
-![Output IB](img/1b.chrishemsworth.jpeg)  
-
-**Output 1C**  
-![Output IC](img/1c.chrishemsworth.jpeg)  
-
-**Output 1D**  
-![Output ID](img/1d.chrishemsworth.jpeg)  
-
-
-
-**Soal 3 (Putri Joselina Silitonga)**
+### Soal 3 (Putri Joselina Silitonga)
 
 Untuk merayakan ulang tahun ke 52 album The Dark Side of the Moon, tim PR Pink Floyd mengadakan sebuah lomba dimana peserta diminta untuk membuat sebuah script bertemakan setidaknya 5 dari 10 lagu dalam album tersebut. Sebagai salah satu peserta, kamu memutuskan untuk memilih Speak to Me, On the Run, Time, Money, dan Brain Damage. Saat program ini dijalankan, terminal harus dibersihkan terlebih dahulu agar tidak mengganggu tampilan dari fungsi fungsi yang kamu buat. Program ini dijalankan dengan cara ./dsotm.sh --play=”<Track>” dengan Track sebagai nama nama lagu yang kamu pilih.
 
@@ -232,6 +230,7 @@ on_the_run() {
     done
 }
 ```
+
 bar_length=200 → Panjang total progress bar.
 
 progress=0 → Menyimpan nilai progres saat ini.
@@ -239,16 +238,15 @@ Looping untuk Menampilkan Progress Bar
 
 while [ $progress -le $bar_length ]; do → Selama nilai progress masih lebih kecil atau sama dengan bar_length, jalankan loop.
 
-echo "*** On the Run ***" → Menampilkan judul.
+echo "**_ On the Run _**" → Menampilkan judul.
 
 echo -n "[" → Menampilkan tanda awal progress bar.
 
-Bintang * sebanyak progress → Menggunakan for ((i = 0; i < progress; i++)).
+Bintang \* sebanyak progress → Menggunakan for ((i = 0; i < progress; i++)).
 
 Spasi sisa bar → Menggunakan for ((i = progress; i < bar_length; i++)).
 
-Menampilkan persentase kemajuan → $(($progress * 100 / $bar_length))%.
-
+Menampilkan persentase kemajuan → $(($progress \* 100 / $bar_length))%.
 
 progress=$((progress + 1)) → Menambah nilai progress setiap iterasi.
 sleep 0.2 → Memberi jeda 0.2 detik agar animasi terlihat lebih nyata.
@@ -264,12 +262,13 @@ time_display() {
     done
 }
 ```
+
 Loop tanpa henti (while true; do) memastikan fungsi berjalan terus.
 
 clear membersihkan layar agar hanya tampilan terbaru yang terlihat.
 Menampilkan header "~~~ Time ~~~".
 
-Menampilkan waktu saat ini dengan format YYYY-MM-DD HH:MM:SS 
+Menampilkan waktu saat ini dengan format YYYY-MM-DD HH:MM:SS
 
 d. Money
 
@@ -298,6 +297,7 @@ d. Money
     done
 }
 ```
+
 Menyimpan simbol dalam array (symbols).
 
 Mengambil ukuran terminal (tput cols & tput lines).
@@ -312,25 +312,25 @@ Menampilkan simbol di posisi tersebut dengan warna acak.
 
 Jeda 0.05 detik sebelum mengulang.
 
-e. Brain Damage 
- 
- ```bash
- brain_damage() {
-    while true; do
-        clear
-        echo -e "\e[1;35m------ Brain Damage ------\e[0m"
-        echo -e "\e[1;33mWaktu:\e[0m $(date '+%H:%M:%S')"
-        echo -e "\e[1;33mLoad Average:\e[0m $(uptime | awk -F'load average:' '{print $2}')"
-        echo -e "\e[1;33mTasks:\e[0m $(ps -eo stat | grep -c '^R') running, $(ps -eo stat | grep -c '^S') sleeping"
-        echo -e "\e[1;34m====================================\e[0m"
-        echo -e "\e[1;36mPID   USER      PR  NI    VIRT   RES  %CPU %MEM  TIME+ COMMAND\e[0m"
+e. Brain Damage
 
-        ps -eo pid,user,pri,ni,vsize,rss,pcpu,pmem,time,comm --sort=-%cpu | head -15 | while read -r pid user pri ni vsize rss pcpu pmem time comm; do
-            printf "\e[1;37m%-6s %-8s %-3s %-3s %-8s %-6s %-4s %-4s %-8s %-s\e[0m\n" "$pid" "$user" "$pri" "$ni" "$vsize" "$rss" "$pcpu" "$pmem" "$time" "$comm"
-        done
+```bash
+brain_damage() {
+   while true; do
+       clear
+       echo -e "\e[1;35m------ Brain Damage ------\e[0m"
+       echo -e "\e[1;33mWaktu:\e[0m $(date '+%H:%M:%S')"
+       echo -e "\e[1;33mLoad Average:\e[0m $(uptime | awk -F'load average:' '{print $2}')"
+       echo -e "\e[1;33mTasks:\e[0m $(ps -eo stat | grep -c '^R') running, $(ps -eo stat | grep -c '^S') sleeping"
+       echo -e "\e[1;34m====================================\e[0m"
+       echo -e "\e[1;36mPID   USER      PR  NI    VIRT   RES  %CPU %MEM  TIME+ COMMAND\e[0m"
 
-        sleep 2
-    done
+       ps -eo pid,user,pri,ni,vsize,rss,pcpu,pmem,time,comm --sort=-%cpu | head -15 | while read -r pid user pri ni vsize rss pcpu pmem time comm; do
+           printf "\e[1;37m%-6s %-8s %-3s %-3s %-8s %-6s %-4s %-4s %-8s %-s\e[0m\n" "$pid" "$user" "$pri" "$ni" "$vsize" "$rss" "$pcpu" "$pmem" "$time" "$comm"
+       done
+
+       sleep 2
+   done
 }
 ```
 
@@ -362,13 +362,14 @@ case "$1" in
     --play="Time") time_display ;;
     --play="Money") money ;;
     --play="Brain Damage") brain_damage ;;
-    *) 
+    *)
         echo "Usage: $0 --play=\"<Track>\""
         echo "Available Tracks: Speak to Me, On the Run, Time, Money, Brain Damage"
         exit 1
         ;;
 esac
 ```
+
 case "$1" in
 → Mengecek nilai argumen pertama ($1).
 
@@ -379,25 +380,16 @@ case "$1" in
     echo "Available Tracks: Speak to Me, On the Run, Time, Money, Brain Damage"
     exit 1
     ;;
+
 → Jika tidak cocok, tampilkan pesan bantuan lalu keluar.
 
 **Output 3A**  
 ![3A - Speak to Me](img/3a_speaktome.jpeg)  
-**Output 3B** 
+**Output 3B**
 ![3B - On the Run](img/3b_ontherun.jpeg)  
-**Output 3C** 
+**Output 3C**
 ![3C - Time](img/3c_time.jpeg)  
-**Output 3D** 
+**Output 3D**
 ![3D - Money](img/3d_money.jpeg)  
-**Output 3E** 
-![3E - Brain Damage](img/3e_braindamage.jpeg)  
-
-
-
-
-
-
-
-
-
-
+**Output 3E**
+![3E - Brain Damage](img/3e_braindamage.jpeg)
