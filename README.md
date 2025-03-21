@@ -556,3 +556,23 @@ help_screen() {
 }
 ```
 Fungsi diatas untuk menampilkan help screen yang menarik.
+
+
+##### Fitur summary data
+
+<img src="./img/info.jpeg" width="500" />
+
+##### Fitur sorting
+<img src="./img/sort.jpeg" width="500" />
+
+##### Fitur search pokemon
+<img src="./img/grep.jpeg" width="500" />
+
+##### Fitur filter berdasarkan tipe
+<img src="./img/filter.jpeg" width="500" />
+
+##### Fitur error handling 
+<img src="./img/error_handling.jpeg" width="500" />
+
+##### Fitur help screen
+<img src="./img/help_screen.jpeg" width="500" />
