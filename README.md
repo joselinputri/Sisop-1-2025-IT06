@@ -7,7 +7,7 @@ Repository ini berisi hasil pengerjaan Praktikum Sistem Operasi 2025 Modul 1
 | Paundra Pujo Darmawan    | 5027241008 |
 | Putri Joselina Silitonga | 5027241116 |
 
-### Soal 1: Putri Joselina Silitonga
+### Soal 1 (Putri Joselina Silitonga)
 
 Di sebuah desa kecil yang dikelilingi bukit hijau, Poppo dan Siroyo, dua sahabat karib, sering duduk di bawah pohon tua sambil membayangkan petualangan besar. Poppo, yang ceria dan penuh semangat, baru menemukan kesenangan dalam dunia buku, sementara Siroyo, dengan otaknya yang tajam, suka menganalisis segala hal. Suatu hari, mereka menemukan tablet ajaib berisi catatan misterius bernama reading_data.csv. Dengan bantuan keajaiban awk, mereka memutuskan untuk menjelajahi rahasia di balik data itu, siap menghadapi tantangan demi tantangan dalam petualangan baru mereka.
 
@@ -430,3 +430,129 @@ case "$1" in
 ![3D - Money](img/3d_money.jpeg)  
 **Output 3E**
 ![3E - Brain Damage](img/3e_braindamage.jpeg)
+
+### Soal 4 (Paundra Pujo Darmawan)
+
+Pada soal terakhir ini, kita ditugaskan untuk membuat program analisa pokemon. Dimana program tersebut memiliki beberapa objektif. 
+
+1. Melihat summary data
+
+```shell
+info() {
+    local file="$1"
+    highest_usage=$(sort -t, -k2 -n -r "$file" | head -n 1 | cut -d, -f1,2)
+    highest_raw_usage=$(sort -t, -k3 -n -r "$file" | head -n 1 | cut -d, -f1,3)
+    echo "Summary of pokemon_usage.csv"
+    echo "Highest Adjusted Usage: $highest_usage"
+    echo "Highest Raw Usage: $highest_raw_usage"
+}
+```
+Dimana pada kode diatas, kita menggunakan sort untuk mengurutkan value dari usage dan raw usage, dan menggunakan head untuk mengambil nilai teratas, serta menggunakan cut untuk mengambil nilai dari usage serta raw usage.
+
+2. Mengurutkan kolom berdasarkan data kolom
+
+```shell
+sort_data() {
+    local file="$1"
+    local sort_by="$2"
+    case $sort_by in
+        usage)
+            sort_column=2
+            ;;
+        rawusage)
+            sort_column=3
+            ;;
+        hp)
+            sort_column=6
+            ;;
+        atk)
+            sort_column=7
+            ;;
+        def)
+            sort_column=8
+            ;;
+        spatk)
+            sort_column=9
+            ;;
+        spdef)
+            sort_column=10
+            ;;
+        speed)
+            sort_column=11
+            ;;
+        *)
+            echo "Error: invalid sort option"
+            exit 1
+            ;;
+    esac
+    sort -t, -k"$sort_column" -n -r "$file"
+}
+```
+
+Pada kode diatas, fungsi paling utama adalah di paling bawah, `sort -t, -k"$sort_column" -n -r "$file"`. Dimana itu berfungsi untuk mengurutkan data berdasarkan kolom yang dipilih.
+
+3. Mencari nama pokemon tertentu
+```shell
+grep_pokemon() {
+    local file="$1"
+    local search="$2"
+    grep -i "$search" "$file" | sort -t, -k2 -n -r
+}
+```
+Kode diatas berfungsi untuk mengambil pokemon dengan menggunakan command grep.
+
+4. Mencari pokemon berdasarkan filter tipe nama
+```shell
+filter_by_type() {
+    local file="$1"
+    local type="$2"
+    grep -i "$type" "$file" | sort -t, -k2 -n -r
+}
+```
+Sama seperti mencari nama pokemon, kode ini juga mengambil dan menampilkan pokemon dengan tipe tertentu.
+
+5. Error handling
+```shell
+if [[ $# -lt 2 ]]; then
+        echo "Error: no option provided"
+        echo "Use -h or --help for more information"
+        exit 1
+    fi
+```
+Potongan kode diatas adalah untung menangani error ketika user salah memberikan argumen.
+
+6. Help screen yang menarik
+```shell
+display_ascii_art() {
+    cat << "EOF"
+
+ ____   ___  _  _______ __  __  ___  _   _ 
+|  _ \ / _ \| |/ / ____|  \/  |/ _ \| \ | |
+| |_) | | | | ' /|  _| | |\/| | | | |  \| |
+|  __/| |_| | . \| |___| |  | | |_| | |\  |
+|_|    \___/|_|\_\_____|_|  |_|\___/|_| \_|
+
+EOF
+}
+```
+
+```shell
+help_screen() {
+    display_ascii_art
+    echo "Usage: ./pokemon_analysis.sh <file> [options]"
+    echo ""
+    echo "Options:"
+    echo "  --info                Show the summary of the CSV file"
+    echo "  --sort <column>       Sort the data by the specified column (usage, rawusage, hp, atk, def, spatk, spdef, speed)"
+    echo "  --grep <pokemon>      Search for a specific Pokemon by name"
+    echo "  --filter <type>       Filter Pokemon by type"
+    echo "  -h, --help            Display this help message"
+    echo ""
+    echo "Example usage:"
+    echo "  ./pokemon_analysis.sh pokemon_usage.csv --info"
+    echo "  ./pokemon_analysis.sh pokemon_usage.csv --sort usage"
+    echo "  ./pokemon_analysis.sh pokemon_usage.csv --grep rotom"
+    echo "  ./pokemon_analysis.sh pokemon_usage.csv --filter dark"
+}
+```
+Fungsi diatas untuk menampilkan help screen yang menarik.
