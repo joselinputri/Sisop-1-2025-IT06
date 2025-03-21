@@ -133,7 +133,8 @@ main() {
             help_screen
             ;;
         *)
-            echo "Error: unknown option $option"
+            echo "Error: no option provided"
+            echo "Use -h or --help for more information"
             exit 1
             ;;
     esac
